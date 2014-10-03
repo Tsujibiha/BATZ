@@ -1,6 +1,8 @@
 package com.alanesuhr.booleantoolbox;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by benjamin on 10/3/14.
@@ -76,7 +78,14 @@ public class BoolExpr {
     }
 
     public Set<Variable> getVariablesUsed() {
-      return null;
+        Set<Variable> out = new HashSet<Variable>(Variable.values().length);
+        if(this.kind == Kind.VAR) {
+            out.add(this.variable);
+        } else if(this.kind != Kind.CONST) {
+            out.addAll(this.childA.getVariablesUsed());
+            out.addAll(this.childB.getVariablesUsed());
+        }
+        return out;
     }
 
 
