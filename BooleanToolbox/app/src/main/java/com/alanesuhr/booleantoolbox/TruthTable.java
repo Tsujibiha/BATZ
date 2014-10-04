@@ -44,22 +44,22 @@ public class TruthTable {
         html += "<tr>";
         // Each variable
         for (BoolExpr.Variable var : expr.getVariablesUsed()) {
-            html += "<td>" + /* var to char */ + "</td>";
+            html += "<td>" + var.toString() + "</td>";
         }
         // Final expression
-        html += "<td>" + /* expr to string */ + "</td></tr>";
+        html += "<td>" + expr.toString() + "</td></tr>";
 
         // Each row
         for (int i = 0; i < values.size(); i++) {
             html += "<tr>";
             int digit = 0;
             // For each variable, get the digit'th digit of the index's truth and display it.
-            for (BoolExpr.Variable var : vars) {
+            for (BoolExpr.Variable var : expr.getVariablesUsed()) {
                 // hakcy
-                html += "<td>" + (i >> digit) & 1 != 0 ? "1" : "0") + "</td>";
+                html += "<td>" + (((i >> digit) & 1) != 0 ? "1" : "0") + "</td>";
             }
             // Expression's value
-            html += "<td>" + values[i] ? "1" : "0" + "</td>";
+            html += "<td>" + (values.get(i) ? "1" : "0") + "</td>";
             html += "</tr>";
         }
 
