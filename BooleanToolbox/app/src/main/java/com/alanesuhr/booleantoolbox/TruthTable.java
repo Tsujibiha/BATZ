@@ -10,8 +10,8 @@ public class TruthTable {
   public ArrayList<boolean> values;
 
   public TruthTable(BoolExpr expr) {
-    int numVars;
-    /*
+    Set<Variable> vars = expr.getVariablesUsed();
+    int numVars = vars.size();
     int numCombs = Math.exp(2, numVars);
 
     for (int i = 0; i < numCombs; i++) {
@@ -26,6 +26,5 @@ public class TruthTable {
 
       values.add(BoolExpr.eval(combination));
     }
-    */
   }
 }

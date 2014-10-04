@@ -75,6 +75,11 @@ public class BoolExpr {
         this.inverted = i;
     }
 
+    public Set<Variable> getVariablesUsed() {
+      return null;
+    }
+
+
     public static BoolExpr makeAnd(BoolExpr a, BoolExpr b, boolean inv) {
         BoolExpr out = new BoolExpr();
         out.kind = Kind.AND;
