@@ -29,12 +29,13 @@ public class BoolExprParse {
         Log.d(TAG, "parseExpr called on: " + in.toString());
 
         BoolExpr cur_term = parseTerm(in);
-        while(!in.isEmpty()) { // for each term
+
+        Log.d(TAG, "after parseTerm: " + in.toString());
+        while(!in.isEmpty() && OrChars.indexOf(in.peek()) != -1) { // for each term
             char next = in.remove();
-            if (OrChars.indexOf(next) != -1) {
-                BoolExpr next_term = parseTerm(in);
-                cur_term = BoolExpr.makeOr(cur_term, next_term);
-            }
+            Log.d(TAG, "parseExpr removed " + next);
+            BoolExpr next_term = parseTerm(in);
+            cur_term = BoolExpr.makeOr(cur_term, next_term);
         }
         return cur_term;
     }
@@ -42,15 +43,14 @@ public class BoolExprParse {
     private static BoolExpr parseTerm(Queue<Character> in) {
         Log.d(TAG, "parseTerm called on: " + in.toString());
 
-        boolean inverted = parseNot(in);
+        Log.d(TAG, "after parseNot: " + in.toString());
 
         BoolExpr cur_factor = parseFactor(in);
-        while(!in.isEmpty()) { // for each factor
+        while(!in.isEmpty() && AndChars.indexOf(in.peek()) != -1) { // for each factor
             char next = in.remove();
-            if(AndChars.indexOf(next) != -1) {
-                BoolExpr next_factor = parseFactor(in);
-                cur_factor = BoolExpr.makeAnd(cur_factor, next_factor, inverted);
-            }
+            Log.d(TAG, "parseTerm removed " + next);
+            BoolExpr next_factor = parseFactor(in);
+            cur_factor = BoolExpr.makeAnd(cur_factor, next_factor);
         }
         return cur_factor;
     }
@@ -58,20 +58,27 @@ public class BoolExprParse {
     private static BoolExpr parseFactor(Queue<Character> in) {
         Log.d(TAG, "parseFactor called on: " + in.toString());
 
+        boolean inverted = parseNot(in);
+
         BoolExpr factor;
         if(in.peek() == '(') {
             if(in.isEmpty()) {
                 Log.e(TAG, "Unexpected end of input!");
             }
-            in.remove(); // throw out '('
+            Log.d(TAG, "parseFactor removed " + in.remove());
+             // throw out '('
             factor = parseExpr(in);
             if(in.isEmpty()) {
                 Log.e(TAG, "Unexpected end of input!");
             }
-            in.remove(); // throw out ')'
+            Log.d(TAG, "parseFactor removed " + in.remove());
+             // throw out ')'
         } else {
             factor = parseConstOrVar(in);
+            Log.d(TAG, "after parseConstOrVar: " + in.toString());
         }
+
+        factor.setInverted(inverted);
         return factor;
     }
 
@@ -81,7 +88,7 @@ public class BoolExprParse {
         boolean inverted = false;
         if(!in.isEmpty() && NotChars.indexOf(in.peek()) != -1) { // starts with not
             inverted = true;
-            in.remove();
+            Log.d(TAG, "parseNot removed " + in.remove());
         }
         return inverted;
     }
@@ -89,20 +96,18 @@ public class BoolExprParse {
     private static BoolExpr parseConstOrVar(Queue<Character> in) {
         Log.d(TAG, "parseConstOrVar called on: " + in.toString());
 
-        boolean inverted = parseNot(in);
-
         char c = in.peek();
         if(TrueChars.indexOf(c) != -1) {
-            in.remove();
+            Log.d(TAG, "parseConstOrVar removed " + in.remove());
             return BoolExpr.makeConst(true);
         } else if(FalseChars.indexOf(c) != -1) {
-            in.remove();
+            Log.d(TAG, "parseConstOrVar removed " + in.remove());
             return BoolExpr.makeConst(false);
         } else {
             int var = VarChars.indexOf(c);
             if(var != -1) {
-                in.remove();
-                return BoolExpr.makeVar(BoolExpr.Variable.values()[var], inverted);
+                Log.d(TAG, "parseConstOrVar removed " + in.remove());
+                return BoolExpr.makeVar(BoolExpr.Variable.values()[var]);
             } else {
                 Log.e(TAG, "Expected Const or Var, got: " + c);
                 return null;

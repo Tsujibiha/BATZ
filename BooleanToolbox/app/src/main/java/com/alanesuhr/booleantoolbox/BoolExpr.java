@@ -86,7 +86,7 @@ public class BoolExpr {
                 out = this.childA.toString() + "*" + this.childB.toString();
                 break;
             case OR:
-                out = this.childA.toString() + "+" + this.childB.toString();
+                out = "(" + this.childA.toString() + "+" + this.childB.toString() + ")";
                 break;
             case XOR:
                 out = this.childA.toString() + "@" + this.childB.toString();
