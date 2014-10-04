@@ -14,9 +14,15 @@ import android.view.View;
  * Created by benjamin on 10/4/14.
  */
 public class CircuitView extends View {
+
+    private class SubPath {
+        public Path path;
+        float yOut;
+    }
+
     static final String TAG = "CircuitView";
 
-    private Path mPath;
+    private SubPath mPath;
     private Paint mPaint;
 
     public CircuitView(Context context, BoolExpr expr) {
@@ -37,63 +43,64 @@ public class CircuitView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
     }
 
-    private Path drawGates(BoolExpr expr) {
-        Path path = new Path();
-        Path pathA;
-        Path pathB;
+    private SubPath drawGates(BoolExpr expr) {
+        SubPath path = new SubPath();
+
+        SubPath pathA;
+        SubPath pathB;
 
         switch(expr.getKind()) {
             case AND:
-                path.addPath(Gates.And());
+                path.path = Gates.And();
+                path.yOut = 50f;
 
                 pathA = drawGates(expr.getChildA());
                 pathB = drawGates(expr.getChildB());
                 stitchPaths(path, pathA, pathB);
                 break;
             case OR:
-                path.addPath(Gates.Or());
+                path.path = Gates.Or();
+                path.yOut = 50f;
 
                 pathA = drawGates(expr.getChildA());
                 pathB = drawGates(expr.getChildB());
                 stitchPaths(path, pathA, pathB);
                 break;
             case XOR:
+                path.path = new Path();
                 break;
             case CONST:
-
+                path.path = new Path();
                 break;
             case VAR:
+                path.path = new Path();
                 break;
         }
         return path;
     }
 
-    private void stitchPaths(Path path, Path pathA, Path pathB) {
-        if(pathA.isEmpty()) {
-            stitchPaths(path, pathB);
-        } else if(pathB.isEmpty()) {
-            stitchPaths(path, pathA);
-        } else {
-            RectF boundsA = new RectF();
-            pathA.computeBounds(boundsA, true);
-            RectF boundsB = new RectF();
-            pathB.computeBounds(boundsB, true);
+    private void stitchPaths(SubPath path, SubPath pathA, SubPath pathB) {
+        RectF boundsA = new RectF();
+        pathA.path.computeBounds(boundsA, true);
+        RectF boundsB = new RectF();
+        pathB.path.computeBounds(boundsB, true);
 
-            float xShift = Math.max(boundsA.right, boundsB.right) + 50f;
-            float yShift = (boundsA.bottom + boundsB.bottom) / 2.0f;
+        float xShift = Math.max(boundsA.right, boundsB.right) + 50f;
+        float yShift = (boundsA.bottom + boundsB.bottom) / 2.0f;
 
-            Log.d(TAG, "Chosen shift: (" + xShift + "," + yShift + ")");
+        Log.d(TAG, "Chosen shift: (" + xShift + "," + yShift + ")");
 
-            path.offset(xShift, -yShift);
-            path.addPath(pathB);
-            path.moveTo(boundsB.right, boundsB.bottom / 2);
-            path.lineTo(xShift, -yShift + 75);
+        path.path.offset(xShift, -yShift);
+        path.path.addPath(pathB.path);
+        path.path.moveTo(boundsB.right, pathB.yOut);
+        path.path.lineTo(xShift, -yShift + 75);
 
-            path.offset(0f, 2 * yShift);
-            path.addPath(pathA);
-            path.moveTo(boundsA.right, boundsA.bottom / 2);
-            path.lineTo(xShift, yShift + 25);
-        }
+        path.path.offset(0f, 2 * yShift);
+        path.path.addPath(pathA.path);
+        path.path.moveTo(boundsA.right, pathA.yOut);
+        path.path.lineTo(xShift, yShift + 25);
+
+        path.yOut += yShift;
     }
 
     private void stitchPaths(Path path, Path pathA) {
@@ -127,6 +134,6 @@ public class CircuitView extends View {
     }
 
     protected void onDraw(Canvas canvas) {
-        canvas.drawPath(mPath, mPaint);
+        canvas.drawPath(mPath.path, mPaint);
     }
 }
