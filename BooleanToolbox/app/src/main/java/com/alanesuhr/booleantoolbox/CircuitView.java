@@ -21,6 +21,8 @@ public class CircuitView extends View {
         mPath = Gates.Or();
         mPath.offset(0, 120);
         mPath.addPath(Gates.And());
+        mPath.offset(0, 120);
+        mPath.addPath(Gates.Not());
         mPath.offset(100, 100);
 
         mPaint = new Paint();

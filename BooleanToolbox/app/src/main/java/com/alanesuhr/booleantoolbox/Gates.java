@@ -40,4 +40,20 @@ public class Gates {
 
         return out;
     }
+
+    public static Path Not() {
+        Path out = new Path();
+
+        out.moveTo(50f, 0f);
+        out.lineTo(50f, 100f);
+        out.lineTo(130f, 50f);
+        out.close();
+
+        out.addCircle(140f, 50f, 10f, Path.Direction.CCW);
+
+        out.moveTo(50f, 50f);
+        out.lineTo(0f, 50f);
+
+        return out;
+    }
 }
