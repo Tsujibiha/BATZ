@@ -2,6 +2,8 @@ package com.alanesuhr.booleantoolbox;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Queue;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 /**
@@ -146,5 +148,17 @@ public class BoolExpr {
 
     public static BoolExpr makeVar(Variable v) {
         return makeVar(v, false);
+    }
+
+    public static Queue<Character> getTokens(String stringToTokenize) {
+        Queue<Character> tokens = new PriorityQueue<Character>();
+        for (int i = 0; i < stringToTokenize.length(); i++) {
+            Character c = stringToTokenize.charAt(i);
+            if (true) {
+                tokens.offer(c);
+            }
+        }
+
+        return tokens;
     }
 }
