@@ -16,16 +16,15 @@ import android.os.Build;
 
 public class MyActivity extends FragmentActivity {
 
-    TabPagerAdapter adapt;
-    ViewPager mViewPager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        adapt = new TabPagerAdapter( getSupportFragmentManager());
-        mViewPager = (ViewPager)findViewById(R.id.pager);
-        mViewPager.setAdapter(adapt);
+
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
