@@ -67,7 +67,7 @@ public class MyActivity extends Activity {
             String test = "A*!B+!(C+B)";
             BoolExpr expr = BoolExprParse.parse(test);
 
-            Log.d("Output", expr.toString());
+           // Log.d("Output", expr.toString());
 
             TruthTable tt = new TruthTable(expr);
             Log.d("TTHTML", tt.getHTMLTable());

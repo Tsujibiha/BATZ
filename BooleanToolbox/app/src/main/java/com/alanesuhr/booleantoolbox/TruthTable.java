@@ -1,4 +1,5 @@
 package com.alanesuhr.booleantoolbox;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -13,9 +14,13 @@ public class TruthTable {
      * Must be of size 2^N, where N is the number of variables in the boolean expression.
      */
     public ArrayList<Boolean> values;
-    BoolExpr expr;
+    BoolExpr corrExpression;
+    protected static final String TAG = "TruthTable";
 
     public TruthTable(BoolExpr expr) {
+        values = new ArrayList<Boolean>();
+        corrExpression = expr;
+
         Set<BoolExpr.Variable> vars = expr.getVariablesUsed();
         int numVars = vars.size();
         int numCombs = 1 << numVars;
@@ -38,26 +43,38 @@ public class TruthTable {
     }
 
     public String getHTMLTable() {
-        String html = "<table>";
+        String html = "<table border=\"1\">";
 
         // Header row
         html += "<tr>";
         // Each variable
-        for (BoolExpr.Variable var : expr.getVariablesUsed()) {
-            html += "<td>" + var.toString() + "</td>";
+        ArrayList<String> varHeaderCells = new ArrayList<String>();
+        for (BoolExpr.Variable var : corrExpression.getVariablesUsed()) {
+            varHeaderCells.add("<td>" + var.toString() + "</td>");
         }
+
+        for (int i = corrExpression.getVariablesUsed().size() - 1; i >= 0; i--) {
+            html += varHeaderCells.get(i);
+        }
+
         // Final expression
-        html += "<td>" + expr.toString() + "</td></tr>";
+        html += "<td>" + corrExpression.toString() + "</td></tr>";
 
         // Each row
         for (int i = 0; i < values.size(); i++) {
             html += "<tr>";
             int digit = 0;
             // For each variable, get the digit'th digit of the index's truth and display it.
-            for (BoolExpr.Variable var : expr.getVariablesUsed()) {
+            ArrayList<String> varCells = new ArrayList<String>();
+            for (BoolExpr.Variable var : corrExpression.getVariablesUsed()) {
                 // hakcy
-                html += "<td>" + (((i >> digit) & 1) != 0 ? "1" : "0") + "</td>";
+                varCells.add("<td>" + (((i >> digit) & 1) != 0 ? "1" : "0") + "</td>");
+                digit ++;
             }
+            for (int j = corrExpression.getVariablesUsed().size() - 1; j >= 0; j--) {
+                html += varCells.get(j);
+            }
+
             // Expression's value
             html += "<td>" + (values.get(i) ? "1" : "0") + "</td>";
             html += "</tr>";
