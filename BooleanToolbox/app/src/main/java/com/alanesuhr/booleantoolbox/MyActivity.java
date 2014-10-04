@@ -13,7 +13,8 @@ import android.os.Build;
 
 
 
-public class MyActivity extends Activity {
+public class MyActivity extends FragmentActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
