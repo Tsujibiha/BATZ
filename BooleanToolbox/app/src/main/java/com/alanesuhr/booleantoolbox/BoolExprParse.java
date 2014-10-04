@@ -21,8 +21,6 @@ public class BoolExprParse {
     protected static final String VarChars   = "ABCDWXYZ";
 
     BoolExpr parseExpr(Queue<Character> in) {
-        assert !in.isEmpty();
-
         boolean inverted = parseNot(in);
 
         BoolExpr cur_term = parseTerm(in);
@@ -93,8 +91,7 @@ public class BoolExprParse {
         Queue<Character> tokens = new PriorityQueue<Character>();
         for (int i = 0; i < stringToTokenize.length(); i++) {
             Character c = stringToTokenize.charAt(i);
-            if (AndChars.indexOf(c) != -1 || OrChars.indexOf(c) != -1 || XorChars.indexOf(c) != -1
-                || NotChars.indexOf(c) != -1) {
+            if (c != ' ') {
                 tokens.offer(c);
             }
         }
