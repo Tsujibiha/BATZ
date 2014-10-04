@@ -82,14 +82,32 @@ public class CircuitView extends View {
                 stitchPaths(path, pathA, pathB);
                 break;
             case CONST:
-                path.path = Gates.Const(expr.getConstant());
-                path.yOut = 25f;
-                path.xOut = 25f;
+                if(expr.getInverted()) {
+                    BoolExpr tmp = BoolExpr.makeBuf(expr);
+                    path = drawGates(tmp);
+                } else {
+                    path.path = Gates.Const(expr.getConstant());
+                    path.yOut = 25f;
+                    path.xOut = 25f;
+                }
                 break;
             case VAR:
-                path.path = Gates.Variable(expr.getVariable());
-                path.yOut = 25f;
-                path.xOut = 25f;
+                if(expr.getInverted()) {
+                    expr.setInverted(false);
+                    BoolExpr tmp = BoolExpr.makeNot(expr);
+                    path = drawGates(tmp);
+                } else {
+                    path.path = Gates.Variable(expr.getVariable());
+                    path.yOut = 25f;
+                    path.xOut = 25f;
+                }
+                break;
+            case BUF:
+                path.path = Gates.Buf();
+                pathA = drawGates(expr.getChildA());
+                stitchPaths(path, pathA);
+                path.yOut = 50f;
+                path.xOut = 150f;
                 break;
         }
         handleInversion(path, expr.getInverted());
@@ -121,16 +139,28 @@ public class CircuitView extends View {
         path.xOut += xShift;
     }
 
+    private void stitchPaths(SubPath path, SubPath pathA) {
+        RectF boundsA = new RectF();
+        pathA.path.computeBounds(boundsA, true);
+
+        float xShift = boundsA.right + 50f;
+        float yShift = boundsA.bottom / 2.0f;
+
+        Log.d(TAG, "Chosen shift: (" + xShift + "," + yShift + ")");
+
+        path.path.offset(xShift, yShift);
+        path.path.addPath(pathA.path);
+        path.path.moveTo(boundsA.right, pathA.yOut);
+        path.path.lineTo(xShift, yShift + 25);
+
+        path.yOut += yShift;
+        path.xOut += xShift;
+    }
+
     private void handleInversion(SubPath path, boolean inverted) {
         if(inverted) {
-            Path out = Gates.Not();
-
-            out.offset(path.xOut + 50f, path.yOut - 50f);
-            out.addPath(path.path);
-            out.moveTo(path.xOut + 5f, path.yOut);
-            out.lineTo(path.xOut + 50f, path.yOut);
-
-            path.path = out;
+            path.path.addPath(Gates.Bauble(), path.xOut + 60f, path.yOut);
+            path.xOut += 20f;
         }
     }
 
