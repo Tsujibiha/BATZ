@@ -1,8 +1,13 @@
 package com.alanesuhr.booleantoolbox;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by benjamin on 10/3/14.
@@ -118,14 +123,22 @@ public class BoolExpr {
         this.inverted = i;
     }
 
-    public Set<Variable> getVariablesUsed() {
-        Set<Variable> out = new HashSet<Variable>(Variable.values().length);
+
+
+    public List<Variable> getVariablesUsed() {
+        Set<Variable> set = new HashSet<Variable>(Variable.values().length);
         if(this.kind == Kind.VAR) {
-            out.add(this.variable);
+            set.add(this.variable);
         } else if(this.kind != Kind.CONST) {
-            out.addAll(this.childA.getVariablesUsed());
-            out.addAll(this.childB.getVariablesUsed());
+            set.addAll(this.childA.getVariablesUsed());
+            set.addAll(this.childB.getVariablesUsed());
         }
+
+        List out = new ArrayList(Variable.values().length);
+        out.addAll(set);
+        Collections.sort(out);
+        Collections.reverse(out);
+
         return out;
     }
 

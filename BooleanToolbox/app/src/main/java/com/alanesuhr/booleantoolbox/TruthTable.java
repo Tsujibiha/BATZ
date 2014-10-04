@@ -1,6 +1,7 @@
 package com.alanesuhr.booleantoolbox;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class TruthTable {
         values = new ArrayList<Boolean>();
         corrExpression = expr;
 
-        Set<BoolExpr.Variable> vars = expr.getVariablesUsed();
+        List<BoolExpr.Variable> vars = expr.getVariablesUsed();
         int numVars = vars.size();
         int numCombs = 1 << numVars;
 
