@@ -140,6 +140,10 @@ public class BoolExpr {
         return this.childB;
     }
 
+    public boolean getConstant() {
+        return this.constant;
+    }
+
     public List<Variable> getVariablesUsed() {
         Set<Variable> set = new HashSet<Variable>(Variable.values().length);
         if(this.kind == Kind.VAR) {

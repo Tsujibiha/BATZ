@@ -18,6 +18,7 @@ public class CircuitView extends View {
     private class SubPath {
         public Path path;
         float yOut;
+        float xOut;
     }
 
     static final String TAG = "CircuitView";
@@ -38,6 +39,9 @@ public class CircuitView extends View {
         mPath.offset(100, 100);*/
 
         mPath = drawGates(expr);
+        mPath.path.offset(10f, 10f);
+        mPath.path.moveTo(mPath.xOut + 60f, mPath.yOut + 10f);
+        mPath.path.lineTo(mPath.xOut + 100f, mPath.yOut + 10f);
 
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
@@ -53,6 +57,7 @@ public class CircuitView extends View {
             case AND:
                 path.path = Gates.And();
                 path.yOut = 50f;
+                path.xOut = 100f;
 
                 pathA = drawGates(expr.getChildA());
                 pathB = drawGates(expr.getChildB());
@@ -61,6 +66,7 @@ public class CircuitView extends View {
             case OR:
                 path.path = Gates.Or();
                 path.yOut = 50f;
+                path.xOut = 100f;
 
                 pathA = drawGates(expr.getChildA());
                 pathB = drawGates(expr.getChildB());
@@ -70,7 +76,9 @@ public class CircuitView extends View {
                 path.path = new Path();
                 break;
             case CONST:
-                path.path = new Path();
+                path.path = Gates.Const(expr.getConstant());
+                path.yOut = 25f;
+                path.xOut = 25f;
                 break;
             case VAR:
                 path.path = new Path();
@@ -101,36 +109,7 @@ public class CircuitView extends View {
         path.path.lineTo(xShift, yShift + 25);
 
         path.yOut += yShift;
-    }
-
-    private void stitchPaths(Path path, Path pathA) {
-        if(pathA.isEmpty()) {
-            stitchPaths(path);
-        } else {
-            RectF boundsA = new RectF();
-            pathA.computeBounds(boundsA, true);
-
-            float xShift = boundsA.right + 50f;
-            float yShift = boundsA.bottom;
-
-            Log.d(TAG, "Chosen shift: (" + xShift + "," + yShift + ")");
-
-            path.offset(xShift, yShift);
-            path.addPath(pathA);
-
-            path.moveTo(boundsA.right, boundsA.bottom - 50f);
-            path.lineTo(xShift, yShift + 25f);
-
-            path.moveTo(0f, yShift + 75f);
-            path.lineTo(xShift, yShift + 75f);
-        }
-    }
-
-    private void stitchPaths(Path path) {
-        path.moveTo(0f, 25f);
-        path.lineTo(50f, 25f);
-        path.moveTo(0f, 75f);
-        path.lineTo(50f, 75f);
+        path.xOut += xShift;
     }
 
     protected void onDraw(Canvas canvas) {
