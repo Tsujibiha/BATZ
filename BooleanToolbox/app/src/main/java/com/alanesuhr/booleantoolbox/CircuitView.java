@@ -127,6 +127,8 @@ public class CircuitView extends View {
 
             out.offset(path.xOut + 50f, path.yOut - 50f);
             out.addPath(path.path);
+            out.moveTo(path.xOut + 5f, path.yOut);
+            out.lineTo(path.xOut + 50f, path.yOut);
 
             path.path = out;
         }

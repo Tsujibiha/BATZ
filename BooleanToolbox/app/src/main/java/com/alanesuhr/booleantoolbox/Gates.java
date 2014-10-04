@@ -170,9 +170,12 @@ public class Gates {
                 break;
             case C:
                 out.moveTo(25f, 0f);
-                out.arcTo(new RectF(0, 0, 50, 50), -80f, -190f);
+                out.arcTo(new RectF(0, 0, 50, 50), -90f, -180f);
                 break;
             case D:
+                out.moveTo(0f, 50f);
+                out.lineTo(0f, 0f);
+                out.arcTo(new RectF(-25, 0, 25, 50), -90f, 180f);
                 break;
             case W:
                 out.moveTo(0f, 0f);
