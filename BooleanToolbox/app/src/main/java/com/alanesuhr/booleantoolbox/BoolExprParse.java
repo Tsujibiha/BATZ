@@ -26,6 +26,11 @@ public class BoolExprParse {
     }
 
     private static BoolExpr parseExpr(Queue<Character> in) {
+        if (in.isEmpty()) {
+            Log.e(TAG, "Expected an expression.");
+            throw new RuntimeException();
+        }
+
         BoolExpr cur_term = parseTerm(in);
 
         while(!in.isEmpty() && OrChars.indexOf(in.peek()) != -1) { // for each term
@@ -62,12 +67,14 @@ public class BoolExprParse {
         BoolExpr factor;
         if (in.peek() == '(') {
             if(in.isEmpty()) {
-                Log.e(TAG, "Unexpected end of input!");
+                Log.e(TAG, "Unexpected input.");
+                throw new RuntimeException();
             }
             in.remove(); // throw out '('
             factor = parseExpr(in);
             if(in.isEmpty()) {
-                Log.e(TAG, "Unexpected end of input!");
+                Log.e(TAG, "Didn't find a closed paren.");
+                throw new RuntimeException();
             }
             in.remove(); // throw out ')'
         } else {
@@ -79,12 +86,14 @@ public class BoolExprParse {
     }
 
     private static boolean parseNot(Queue<Character> in) {
-        boolean inverted = false;
-        if(!in.isEmpty() && NotChars.indexOf(in.peek()) != -1) { // starts with not
+        int numNots = 0;
+        while (!in.isEmpty() && NotChars.indexOf(in.peek()) != -1) { // starts with not
             in.remove();
-            inverted = true;
+            numNots ++;
         }
-        return inverted;
+
+        // If the number of nots is even, then it's not inverted. Otherwise it is inverted.
+        return (numNots % 2 == 0) ? false : true;
     }
 
     private static BoolExpr parseConstOrVar(Queue<Character> in) {
