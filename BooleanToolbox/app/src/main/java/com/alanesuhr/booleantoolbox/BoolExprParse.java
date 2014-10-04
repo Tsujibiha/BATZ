@@ -2,11 +2,8 @@ package com.alanesuhr.booleantoolbox;
 
 import android.util.Log;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Set;
 
 /**
  * Created by benjamin on 10/3/14.
@@ -90,5 +87,18 @@ public class BoolExprParse {
                 return null;
             }
         }
+    }
+
+    public static Queue<Character> getTokens (String stringToTokenize){
+        Queue<Character> tokens = new PriorityQueue<Character>();
+        for (int i = 0; i < stringToTokenize.length(); i++) {
+            Character c = stringToTokenize.charAt(i);
+            if (AndChars.indexOf(c) != -1 || OrChars.indexOf(c) != -1 || XorChars.indexOf(c) != -1
+                || NotChars.indexOf(c) != -1) {
+                tokens.offer(c);
+            }
+        }
+
+        return tokens;
     }
 }
