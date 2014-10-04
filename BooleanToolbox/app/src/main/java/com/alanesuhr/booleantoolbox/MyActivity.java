@@ -30,7 +30,7 @@ public class MyActivity extends FragmentActivity implements
                 .setTabListener(this));
         }
 
-        String test = ")";
+        String test = "A+B";
         BoolExpr expr = BoolExprParse.parse(test);
         Log.d("Output", expr.toString());
 
