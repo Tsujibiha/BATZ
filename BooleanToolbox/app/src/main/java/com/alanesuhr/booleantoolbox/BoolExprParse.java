@@ -38,10 +38,21 @@ public class BoolExprParse {
 
     private static BoolExpr parseTerm(Queue<Character> in) {
         BoolExpr cur_factor = parseFactor(in);
-        while(!in.isEmpty() && AndChars.indexOf(in.peek()) != -1) { // for each factor
-            char next = in.remove();
+        Character c = in.peek();
+
+        while(!in.isEmpty() && (AndChars.indexOf(c) != -1 || NotChars.indexOf(c) != -1 || c == '('
+            || TrueChars.indexOf(c) != -1 || FalseChars.indexOf(c) != -1
+            || VarChars.indexOf(c) != -1)) {
+            // for each factor
+            if (AndChars.indexOf(c) != -1) {
+                char next = in.remove();
+                Log.d(TAG, "parseTerm removed " + next);
+            }
+
             BoolExpr next_factor = parseFactor(in);
             cur_factor = BoolExpr.makeAnd(cur_factor, next_factor);
+
+            c = in.peek();
         }
         return cur_factor;
     }
@@ -50,7 +61,7 @@ public class BoolExprParse {
         boolean inverted = parseNot(in);
 
         BoolExpr factor;
-        if(in.peek() == '(') {
+        if (in.peek() == '(') {
             if(in.isEmpty()) {
                 Log.e(TAG, "Unexpected end of input!");
             }
@@ -92,7 +103,8 @@ public class BoolExprParse {
                 return BoolExpr.makeVar(BoolExpr.Variable.values()[var]);
             } else {
                 Log.e(TAG, "Expected Const or Var, got: " + c);
-                return null;
+                throw new RuntimeException();
+                //return null;
             }
         }
     }

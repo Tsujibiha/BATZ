@@ -6,9 +6,11 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+
 
 public class MyActivity extends FragmentActivity implements
-        ActionBar.TabListener {
+    ActionBar.TabListener {
 
     private ViewPager viewPager;
     private ActionBar actionBar;
@@ -25,8 +27,12 @@ public class MyActivity extends FragmentActivity implements
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         for (String tab_name : tabs) {
             actionBar.addTab(actionBar.newTab().setText(tab_name)
-                    .setTabListener(this));
+                .setTabListener(this));
         }
+
+        String test = "A(A+B)";
+        BoolExpr expr = BoolExprParse.parse(test);
+        Log.d("Output", expr.toString());
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
