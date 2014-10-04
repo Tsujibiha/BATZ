@@ -210,6 +210,14 @@ public class BoolExpr {
         return out;
     }
 
+    public static BoolExpr makeBuf(BoolExpr a) {
+        BoolExpr out = new BoolExpr();
+        out.kind = Kind.BUF;
+        out.inverted = false;
+        out.childA = a;
+        return out;
+    }
+
     public static BoolExpr makeConst(boolean c) {
         BoolExpr out = new BoolExpr();
         out.kind = Kind.CONST;

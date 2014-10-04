@@ -7,6 +7,14 @@ import android.graphics.RectF;
  * Created by benjamin on 10/4/14.
  */
 public class Gates {
+    public static Path Bauble() {
+        Path out = new Path();
+
+        out.addCircle(0f, 0f, 10f, Path.Direction.CCW);
+
+        return out;
+    }
+
     public static Path And() {
         Path out = new Path();
 
@@ -24,19 +32,6 @@ public class Gates {
         return out;
     }
 
-    public static Path And(boolean inverted) {
-        Path out;
-        if(inverted) {
-            out = Not();
-
-            out.offset(150f, 0f);
-            out.addPath(And());
-        } else {
-            out = And();
-        }
-        return out;
-    }
-
     public static Path Or() {
         Path out = new Path();
 
@@ -51,19 +46,6 @@ public class Gates {
         out.moveTo(69f, 75f);
         out.lineTo(0f, 75f);
 
-        return out;
-    }
-
-    public static Path Or(boolean inverted) {
-        Path out;
-        if(inverted) {
-            out = Not();
-
-            out.offset(150f, 0f);
-            out.addPath(Or());
-        } else {
-            out = Or();
-        }
         return out;
     }
 
@@ -89,20 +71,7 @@ public class Gates {
         return out;
     }
 
-    public static Path Xor(boolean inverted) {
-        Path out;
-        if(inverted) {
-            out = Not();
-
-            out.offset(150f, 0f);
-            out.addPath(Xor());
-        } else {
-            out = Xor();
-        }
-        return out;
-    }
-
-    public static Path Not() {
+    public static Path Buf() {
         Path out = new Path();
 
         out.moveTo(50f, 0f);
@@ -110,10 +79,10 @@ public class Gates {
         out.lineTo(130f, 50f);
         out.close();
 
-        out.addCircle(140f, 50f, 10f, Path.Direction.CCW);
-
         out.moveTo(50f, 50f);
         out.lineTo(0f, 50f);
+
+        out.offset(0f, -25f);
 
         return out;
     }
@@ -135,19 +104,6 @@ public class Gates {
             out.lineTo(0f, 50f);
         }
 
-        return out;
-    }
-
-    public static Path Const(boolean in, boolean inverted) {
-        Path out;
-        if(inverted) {
-            out = Not();
-
-            out.offset(25f, -25f);
-            out.addPath(Const(in));
-        } else {
-            out = Const(in);
-        }
         return out;
     }
 
@@ -203,19 +159,6 @@ public class Gates {
                 out.lineTo(0f, 50f);
                 out.lineTo(25f, 50f);
                 break;
-        }
-        return out;
-    }
-
-    public static Path Variable(BoolExpr.Variable in, boolean inverted) {
-        Path out;
-        if(inverted) {
-            out = Not();
-
-            out.offset(25f, -25f);
-            out.addPath(Variable(in));
-        } else {
-            out = Variable(in);
         }
         return out;
     }

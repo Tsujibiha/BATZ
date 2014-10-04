@@ -60,7 +60,7 @@ public class MyActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            BoolExpr in = BoolExprParse.parse("(!B+!C)+TF+!D+BCA");
+            BoolExpr in = BoolExprParse.parse("!(!(B+C)+!(TF)+!D+!B!C!A)");
             View rootView = new CircuitView(container.getContext(), in);
             return rootView;
         }
