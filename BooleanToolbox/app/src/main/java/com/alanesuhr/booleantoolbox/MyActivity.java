@@ -1,79 +1,59 @@
 package com.alanesuhr.booleantoolbox;
 
-import android.app.Activity;
 import android.app.ActionBar;
-import android.app.Fragment;
+import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 
-import java.util.Queue;
+public class MyActivity extends FragmentActivity implements
+        ActionBar.TabListener {
 
-
-public class MyActivity extends Activity {
-
+    private ViewPager viewPager;
+    private ActionBar actionBar;
+    private TabPagerAdapter tabPagerAdapter;
+    private String[] tabs = { "Input", "Table", "Logic" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(tabPagerAdapter);
+        actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        for (String tab_name : tabs) {
+            actionBar.addTab(actionBar.newTab().setText(tab_name)
+                    .setTabListener(this));
         }
-    }
 
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            /**
+             * on swipe select the respective tab
+             * */
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) { }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) { }
+        });
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
-        return true;
+    public void onTabReselected(Tab tab, FragmentTransaction ft) { }
+
+    @Override
+    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-
-
-            String test = "(A*!B+!(C+!B))+(!(C*!D)*B)";
-            BoolExpr expr = BoolExprParse.parse(test);
-
-            Log.d("Output", expr.toString());
-
-            TruthTable tt = new TruthTable(expr);
-            Log.d("TTHTML", tt.getHTMLTable());
-
-            View rootView = inflater.inflate(R.layout.fragment_my, container, false);
-            return rootView;
-        }
-    }
+    public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
 }
