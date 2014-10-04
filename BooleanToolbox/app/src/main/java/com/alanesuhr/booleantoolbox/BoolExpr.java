@@ -21,6 +21,7 @@ public class BoolExpr {
         AND,
         OR,
         XOR,
+        BUF,
         CONST,
         VAR
     }
@@ -76,6 +77,8 @@ public class BoolExpr {
             case VAR:
                 result = values.get(this.variable);
                 break;
+            case BUF:
+                result = this.childA.eval(values);
         }
         if (this.inverted) {
             result = !result;
@@ -111,6 +114,10 @@ public class BoolExpr {
                 break;
             case VAR:
                 out = this.variable.toString();
+                needParen = false;
+                break;
+            case BUF:
+                out = this.childA.toString();
                 needParen = false;
                 break;
         }
@@ -192,6 +199,14 @@ public class BoolExpr {
         out.childA = a;
         out.childB = b;
         out.inverted = inv;
+        return out;
+    }
+
+    public static BoolExpr makeNot(BoolExpr a) {
+        BoolExpr out = new BoolExpr();
+        out.kind = Kind.BUF;
+        out.inverted = true;
+        out.childA = a;
         return out;
     }
 
