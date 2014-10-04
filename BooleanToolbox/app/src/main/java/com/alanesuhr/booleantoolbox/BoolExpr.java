@@ -20,7 +20,7 @@ public class BoolExpr {
         VAR
     }
 
-    enum Variable {
+    public enum Variable {
         A,
         B,
         C,
