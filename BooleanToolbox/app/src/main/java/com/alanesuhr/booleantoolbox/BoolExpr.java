@@ -89,11 +89,15 @@ public class BoolExpr {
         boolean needParen = this.inverted; // need to put parentheses around output
         switch (this.kind) {
             case AND:
-                out = this.childA.toString() + "*" + this.childB.toString();
-                if(this.childA.kind == Kind.OR || this.childA.kind == Kind.XOR ||
-                   this.childB.kind == Kind.OR || this.childB.kind == Kind.XOR) {
-                    needParen = true;
+                String outA = this.childA.toString();
+                String outB = this.childB.toString();
+                if(this.childA.kind == Kind.OR || this.childA.kind == Kind.XOR) {
+                    outA = "(" + outA + ")";
                 }
+                if(this.childB.kind == Kind.OR || this.childB.kind == Kind.XOR) {
+                    outB = "(" + outB + ")";
+                }
+                out = outA + "*" + outB;
                 break;
             case OR:
                 out = this.childA.toString() + "+" + this.childB.toString();
