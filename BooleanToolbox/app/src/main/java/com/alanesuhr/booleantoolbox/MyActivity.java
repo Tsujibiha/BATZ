@@ -1,68 +1,169 @@
 package com.alanesuhr.booleantoolbox;
 
-import android.app.Activity;
 import android.app.ActionBar;
-import android.app.Fragment;
+import android.app.ActionBar.Tab;
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class MyActivity extends Activity {
 
+
+
+    public String prop ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
-        return true;
-    }
+        Button buttonA = (Button)findViewById(R.id.button_A);
+        Button buttonB = (Button)findViewById(R.id.button_B);
+        Button buttonC = (Button)findViewById(R.id.button_C);
+        Button buttonD = (Button)findViewById(R.id.button_D);
+        Button buttonW = (Button)findViewById(R.id.button_W);
+        Button buttonX = (Button)findViewById(R.id.button_X);
+        Button buttonY = (Button)findViewById(R.id.button_Y);
+        Button buttonZ = (Button)findViewById(R.id.button_Z);
+        Button buttonAnd = (Button)findViewById(R.id.button_And);
+        Button buttonOr = (Button)findViewById(R.id.button_Or);
+        Button buttonXor = (Button)findViewById(R.id.button1_Xor);
+        Button buttonOP = (Button)findViewById(R.id.button_Op);
+        Button buttonCP = (Button)findViewById(R.id.button_Cp);
+        Button buttonTable = (Button)findViewById(R.id.button_Table);
+        Button buttonCircuit = (Button)findViewById(R.id.button_Circuit);
+        final TextView text = (TextView)findViewById(R.id.textView);
+        Button buttonF = (Button)findViewById(R.id.button_F);
+        Button buttonT = (Button)findViewById(R.id.button_T);
+        Button buttonBack = (Button)findViewById(R.id.button_Back);
+        buttonA.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               text.setText(prop+"A");
+                prop = text.getText().toString();
+            }
+        });
+        buttonB.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"B");
+                prop = text.getText().toString();
+            }
+        });
+        buttonC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"C");
+                prop = text.getText().toString();
+            }
+        });
+        buttonD.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"D");
+                prop = text.getText().toString();
+            }
+        });
+        buttonW.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"W");
+                prop = text.getText().toString();
+            }
+        });
+        buttonY.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"Y");
+                prop = text.getText().toString();
+            }
+        });
+        buttonX.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"X");
+                prop = text.getText().toString();
+            }
+        });
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        buttonZ.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"Z");
+                prop = text.getText().toString();
+            }
+        });
+        buttonAnd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"*");
+                prop = text.getText().toString();
+            }
+        });
+        buttonXor.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"@");
+                prop = text.getText().toString();
+            }
+        });
+        buttonOr.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"+");
+                prop = text.getText().toString();
+            }
+        });
+        buttonOP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"(");
+                prop = text.getText().toString();
+            }
+        });
+        buttonCP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+")");
+                prop = text.getText().toString();
+            }
+        });
+        buttonCircuit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop= text.getText().toString();
+                Intent intent = new Intent(this, CircuitActivity.class);
+                intent.putExtra(prop,prop);
+                startActivity(intent);
+            }
+        });
+        buttonTable.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop= text.getText().toString();
+                Intent intent = new Intent(this, TableActivity.class);
+                intent.putExtra(prop,prop);
+                startActivity(intent);
+            }
+        });
+        buttonT.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"1");
+                prop = text.getText().toString();
+            }
+        });
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (prop.length() >0) {
+                    text.setText(prop.substring(0, prop.length() - 1));
+                    prop = text.getText().toString();
+                }
+            }
+        });
+        buttonF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"0");
+                prop = text.getText().toString();
+            }
+        });
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        prop = text.getText().toString();
+        String test = prop;
+        BoolExpr expr = BoolExprParse.parse(test);
+        Log.d("Output", expr.toString());
 
-        return super.onOptionsItemSelected(item);
-    }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            BoolExpr in = BoolExprParse.parse("(AB)+(BC)+(CD)");
-            View rootView = new CircuitView(container.getContext(), in);
-            return rootView;
-        }
     }
 }
