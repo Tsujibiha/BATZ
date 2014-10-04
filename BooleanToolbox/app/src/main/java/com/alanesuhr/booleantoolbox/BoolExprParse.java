@@ -46,7 +46,6 @@ public class BoolExprParse {
             // for each factor
             if (AndChars.indexOf(c) != -1) {
                 char next = in.remove();
-                Log.d(TAG, "parseTerm removed " + next);
             }
 
             BoolExpr next_factor = parseFactor(in);
@@ -104,7 +103,6 @@ public class BoolExprParse {
             } else {
                 Log.e(TAG, "Expected Const or Var, got: " + c);
                 throw new RuntimeException();
-                //return null;
             }
         }
     }
