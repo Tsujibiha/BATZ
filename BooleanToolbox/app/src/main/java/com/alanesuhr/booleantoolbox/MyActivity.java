@@ -2,64 +2,168 @@ package com.alanesuhr.booleantoolbox;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
-public class MyActivity extends FragmentActivity implements
-    ActionBar.TabListener {
+public class MyActivity extends Activity {
 
-    private ViewPager viewPager;
-    private ActionBar actionBar;
-    private TabPagerAdapter tabPagerAdapter;
-    private String[] tabs = { "Input", "Table", "Logic" };
+
+
+    public String prop ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(tabPagerAdapter);
-        actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        for (String tab_name : tabs) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
-                .setTabListener(this));
-        }
 
-        String test = "A+B";
+        Button buttonA = (Button)findViewById(R.id.button_A);
+        Button buttonB = (Button)findViewById(R.id.button_B);
+        Button buttonC = (Button)findViewById(R.id.button_C);
+        Button buttonD = (Button)findViewById(R.id.button_D);
+        Button buttonW = (Button)findViewById(R.id.button_W);
+        Button buttonX = (Button)findViewById(R.id.button_X);
+        Button buttonY = (Button)findViewById(R.id.button_Y);
+        Button buttonZ = (Button)findViewById(R.id.button_Z);
+        Button buttonAnd = (Button)findViewById(R.id.button_And);
+        Button buttonOr = (Button)findViewById(R.id.button_Or);
+        Button buttonXor = (Button)findViewById(R.id.button1_Xor);
+        Button buttonOP = (Button)findViewById(R.id.button_Op);
+        Button buttonCP = (Button)findViewById(R.id.button_Cp);
+        Button buttonTable = (Button)findViewById(R.id.button_Table);
+        Button buttonCircuit = (Button)findViewById(R.id.button_Circuit);
+        final TextView text = (TextView)findViewById(R.id.textView);
+        Button buttonF = (Button)findViewById(R.id.button_F);
+        Button buttonT = (Button)findViewById(R.id.button_T);
+        Button buttonBack = (Button)findViewById(R.id.button_Back);
+        buttonA.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               text.setText(prop+"A");
+                prop = text.getText().toString();
+            }
+        });
+        buttonB.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"B");
+                prop = text.getText().toString();
+            }
+        });
+        buttonC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"C");
+                prop = text.getText().toString();
+            }
+        });
+        buttonD.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"D");
+                prop = text.getText().toString();
+            }
+        });
+        buttonW.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"W");
+                prop = text.getText().toString();
+            }
+        });
+        buttonY.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"Y");
+                prop = text.getText().toString();
+            }
+        });
+        buttonX.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"X");
+                prop = text.getText().toString();
+            }
+        });
+
+        buttonZ.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"Z");
+                prop = text.getText().toString();
+            }
+        });
+        buttonAnd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"*");
+                prop = text.getText().toString();
+            }
+        });
+        buttonXor.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"@");
+                prop = text.getText().toString();
+            }
+        });
+        buttonOr.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"+");
+                prop = text.getText().toString();
+            }
+        });
+        buttonOP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"(");
+                prop = text.getText().toString();
+            }
+        });
+        buttonCP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+")");
+                prop = text.getText().toString();
+            }
+        });
+        buttonCircuit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop= text.getText().toString();
+                Intent intent = new Intent(this, CircuitActivity.class);
+                intent.putExtra(prop,prop);
+                startActivity(intent);
+            }
+        });
+        buttonTable.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop= text.getText().toString();
+                Intent intent = new Intent(this, TableActivity.class);
+                intent.putExtra(prop,prop);
+                startActivity(intent);
+            }
+        });
+        buttonT.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"1");
+                prop = text.getText().toString();
+            }
+        });
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (prop.length() >0) {
+                    text.setText(prop.substring(0, prop.length() - 1));
+                    prop = text.getText().toString();
+                }
+            }
+        });
+        buttonF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+"0");
+                prop = text.getText().toString();
+            }
+        });
+
+        prop = text.getText().toString();
+        String test = prop;
         BoolExpr expr = BoolExprParse.parse(test);
         Log.d("Output", expr.toString());
 
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            /**
-             * on swipe select the respective tab
-             * */
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) { }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) { }
-        });
     }
-
-    @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) { }
-
-    @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
 }
