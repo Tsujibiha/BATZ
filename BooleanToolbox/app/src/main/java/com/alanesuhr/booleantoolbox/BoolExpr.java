@@ -128,6 +128,17 @@ public class BoolExpr {
     }
 
 
+    public Kind getKind() {
+        return this.kind;
+    }
+
+    public BoolExpr getChildA() {
+        return this.childA;
+    }
+
+    public BoolExpr getChildB() {
+        return this.childB;
+    }
 
     public List<Variable> getVariablesUsed() {
         Set<Variable> set = new HashSet<Variable>(Variable.values().length);

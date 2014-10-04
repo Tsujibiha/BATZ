@@ -60,7 +60,8 @@ public class MyActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = new CircuitView(container.getContext());
+            BoolExpr in = BoolExprParse.parse("(AB)+(BC)+(CD)");
+            View rootView = new CircuitView(container.getContext(), in);
             return rootView;
         }
     }
