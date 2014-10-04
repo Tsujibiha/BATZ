@@ -67,7 +67,10 @@ public class MyActivity extends Activity {
             String test = "A*!B+!(C+B)";
             BoolExpr expr = BoolExprParse.parse(test);
 
-            Log.d("Boolean", expr.toString());
+            Log.d("Output", expr.toString());
+
+            TruthTable tt = new TruthTable(expr);
+            Log.d("TTHTML", tt.getHTMLTable());
 
             View rootView = inflater.inflate(R.layout.fragment_my, container, false);
             return rootView;
