@@ -60,6 +60,7 @@ public class CircuitView extends View {
             case XOR:
                 break;
             case CONST:
+
                 break;
             case VAR:
                 break;
@@ -68,26 +69,61 @@ public class CircuitView extends View {
     }
 
     private void stitchPaths(Path path, Path pathA, Path pathB) {
-        RectF boundsA = new RectF();
-        pathA.computeBounds(boundsA, true);
-        RectF boundsB = new RectF();
-        pathB.computeBounds(boundsB, true);
+        if(pathA.isEmpty()) {
+            stitchPaths(path, pathB);
+        } else if(pathB.isEmpty()) {
+            stitchPaths(path, pathA);
+        } else {
+            RectF boundsA = new RectF();
+            pathA.computeBounds(boundsA, true);
+            RectF boundsB = new RectF();
+            pathB.computeBounds(boundsB, true);
 
-        Log.d(TAG, "Bounds of pathA: " + boundsA.toString());
-        Log.d(TAG, "Bounds of pathB: " + boundsB.toString());
+            float xShift = Math.max(boundsA.right, boundsB.right) + 50f;
+            float yShift = (boundsA.bottom + boundsB.bottom) / 2.0f;
 
-        float xShift = Math.max(boundsA.right, boundsB.right) + 50f;
-        float yShift = (boundsA.bottom + boundsB.bottom) / 2.0f;
+            Log.d(TAG, "Chosen shift: (" + xShift + "," + yShift + ")");
 
-        path.offset(xShift, -yShift);
-        path.addPath(pathB);
-        path.moveTo(boundsB.right, boundsB.bottom / 2);
-        path.lineTo(xShift, -yShift+75);
+            path.offset(xShift, -yShift);
+            path.addPath(pathB);
+            path.moveTo(0f, -yShift + 75);
+            path.lineTo(xShift, -yShift + 75);
 
-        path.offset(0f, 2*yShift);
-        path.addPath(pathA);
-        path.moveTo(boundsA.right, boundsA.bottom/2);
-        path.lineTo(xShift, yShift+25);
+            path.offset(0f, 2 * yShift);
+            path.addPath(pathA);
+            path.moveTo(0f, yShift + 25);
+            path.lineTo(xShift, yShift + 25);
+        }
+    }
+
+    private void stitchPaths(Path path, Path pathA) {
+        if(pathA.isEmpty()) {
+            stitchPaths(path);
+        } else {
+            RectF boundsA = new RectF();
+            pathA.computeBounds(boundsA, true);
+
+            float xShift = boundsA.right + 50f;
+            float yShift = boundsA.bottom;
+
+            Log.d(TAG, "Chosen shift: (" + xShift + "," + yShift + ")");
+
+            path.offset(xShift, yShift);
+            path.addPath(pathA);
+
+            path.moveTo(boundsA.right, boundsA.bottom - 50f);
+            path.lineTo(xShift, yShift + 25f);
+
+            path.moveTo(0f, yShift + 75f);
+            path.lineTo(xShift, yShift + 75f);
+        }
+    }
+
+    private void stitchPaths(Path path) {
+        path.moveTo(0f, 25f);
+        path.lineTo(50f, 25f);
+        path.moveTo(0f, 75f);
+        path.lineTo(50f, 75f);
     }
 
     protected void onDraw(Canvas canvas) {
