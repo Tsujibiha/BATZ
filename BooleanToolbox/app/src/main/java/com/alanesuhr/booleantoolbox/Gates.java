@@ -56,4 +56,24 @@ public class Gates {
 
         return out;
     }
+
+    public static Path Const(boolean in) {
+        Path out = new Path();
+
+        if(in) {
+            out.moveTo(0f, 0f);
+            out.lineTo(25f, 0f);
+            out.moveTo(12.5f, 0f);
+            out.lineTo(12.5f, 50f);
+        } else {
+            out.moveTo(0f, 0f);
+            out.lineTo(25f, 0f);
+            out.moveTo(0f, 25f);
+            out.lineTo(20f, 25f);
+            out.moveTo(0f, 0f);
+            out.lineTo(0f, 50f);
+        }
+
+        return out;
+    }
 }
