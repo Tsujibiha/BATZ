@@ -81,22 +81,32 @@ public class BoolExpr {
     @Override
     public String toString() {
         String out = "";
+        boolean needParen = this.inverted; // need to put parentheses around output
         switch (this.kind) {
             case AND:
                 out = this.childA.toString() + "*" + this.childB.toString();
+                if(this.childA.kind == Kind.OR || this.childA.kind == Kind.XOR ||
+                   this.childB.kind == Kind.OR || this.childB.kind == Kind.XOR) {
+                    needParen = true;
+                }
                 break;
             case OR:
-                out = "(" + this.childA.toString() + "+" + this.childB.toString() + ")";
+                out = this.childA.toString() + "+" + this.childB.toString();
                 break;
             case XOR:
                 out = this.childA.toString() + "@" + this.childB.toString();
                 break;
             case CONST:
                 out = this.constant ? "T" : "F";
+                needParen = false;
                 break;
             case VAR:
                 out = this.variable.toString();
+                needParen = false;
                 break;
+        }
+        if(needParen) {
+            out = "(" + out + ")";
         }
         if(this.inverted) {
             out = "!" + out;

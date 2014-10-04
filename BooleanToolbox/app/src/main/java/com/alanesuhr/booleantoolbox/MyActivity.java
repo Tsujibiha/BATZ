@@ -64,10 +64,10 @@ public class MyActivity extends Activity {
                 Bundle savedInstanceState) {
 
 
-            String test = "A*!B+!(C+B)";
+            String test = "(A*!B+!(C+!B))+(!(C*!D)*B)";
             BoolExpr expr = BoolExprParse.parse(test);
 
-           // Log.d("Output", expr.toString());
+            Log.d("Output", expr.toString());
 
             TruthTable tt = new TruthTable(expr);
             Log.d("TTHTML", tt.getHTMLTable());
