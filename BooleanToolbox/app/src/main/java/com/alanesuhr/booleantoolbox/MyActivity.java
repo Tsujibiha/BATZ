@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import java.util.Queue;
 
 
 public class MyActivity extends Activity {
@@ -60,6 +62,13 @@ public class MyActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+
+
+            String test = "A*!B+!(C+B)";
+            BoolExpr expr = BoolExprParse.parse(test);
+
+            Log.d("Boolean", expr.toString());
+
             View rootView = inflater.inflate(R.layout.fragment_my, container, false);
             return rootView;
         }

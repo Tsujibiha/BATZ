@@ -58,19 +58,50 @@ public class BoolExpr {
         switch (this.kind) {
             case AND:
                 result = this.childA.eval(values) && this.childB.eval(values);
+                break;
             case OR:
                 result = this.childA.eval(values) || this.childB.eval(values);
+                break;
             case XOR:
                 result = this.childA.eval(values) != this.childB.eval(values);
+                break;
             case CONST:
                 result = this.constant;
+                break;
             case VAR:
                 result = values.get(this.variable);
+                break;
         }
         if (this.inverted) {
             result = !result;
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        String out = "";
+        switch (this.kind) {
+            case AND:
+                out = this.childA.toString() + "*" + this.childB.toString();
+                break;
+            case OR:
+                out = this.childA.toString() + "+" + this.childB.toString();
+                break;
+            case XOR:
+                out = this.childA.toString() + "@" + this.childB.toString();
+                break;
+            case CONST:
+                out = this.constant ? "T" : "F";
+                break;
+            case VAR:
+                out = this.variable.toString();
+                break;
+        }
+        if(this.inverted) {
+            out = "!" + out;
+        }
+        return out;
     }
 
     public void setInverted(boolean i) {
