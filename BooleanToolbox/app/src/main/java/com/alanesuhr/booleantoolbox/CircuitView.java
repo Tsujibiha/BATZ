@@ -55,7 +55,7 @@ public class CircuitView extends View {
 
         switch(expr.getKind()) {
             case AND:
-                path.path = Gates.And();
+                path.path = Gates.And(expr.getInverted());
                 path.yOut = 50f;
                 path.xOut = 100f;
 

@@ -24,6 +24,23 @@ public class Gates {
         return out;
     }
 
+    public static Path And(boolean inverted) {
+        Path out;
+        if(inverted) {
+            out = Not();
+
+            out.offset(150f, 0f);
+            out.addPath(And());
+
+            out.moveTo(100f, 50f);
+            out.lineTo(150f, 50f);
+
+        } else {
+            out = And();
+        }
+        return out;
+    }
+
     public static Path Or() {
         Path out = new Path();
 

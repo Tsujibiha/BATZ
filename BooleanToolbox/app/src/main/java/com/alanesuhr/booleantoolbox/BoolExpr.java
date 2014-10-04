@@ -144,6 +144,10 @@ public class BoolExpr {
         return this.constant;
     }
 
+    public boolean getInverted() {
+        return this.inverted;
+    }
+
     public List<Variable> getVariablesUsed() {
         Set<Variable> set = new HashSet<Variable>(Variable.values().length);
         if(this.kind == Kind.VAR) {
