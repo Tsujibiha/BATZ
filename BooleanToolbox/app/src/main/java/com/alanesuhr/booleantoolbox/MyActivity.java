@@ -4,14 +4,17 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MyActivity extends Activity {
@@ -45,6 +48,8 @@ public static String EXTRA_MESSAGE = "pie";
         Button buttonBack = (Button)findViewById(R.id.button_Back);
         Button buttonClear = (Button)findViewById(R.id.button_Clear);
         Button buttonNot = (Button)findViewById(R.id.button_Not);
+        Button buttonNor = (Button)findViewById(R.id.button_Nor);
+        Button buttonNand = (Button)findViewById(R.id.button_Nand);
         final Intent intent = new Intent(this, TableActivity.class);
         final Intent intent2 = new Intent(this, CircuitActivity.class);
 
@@ -144,6 +149,48 @@ public static String EXTRA_MESSAGE = "pie";
             public void onClick(View v) {
                 prop= text.getText().toString();
                 EXTRA_MESSAGE = prop;
+                intent2.putExtra(EXTRA_MESSAGE,prop);
+                startActivity(intent2);
+            }
+        });
+        buttonNor.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop= text.getText().toString();
+                EXTRA_MESSAGE = prop;
+                try {
+                    BoolExpr bool = BoolExprParse.parse(prop);
+                    bool = BoolExprManipulation.useNOROnly(bool);
+                    prop = bool.toString();
+                    EXTRA_MESSAGE =prop;
+                }
+                catch (RuntimeException e) {
+                    Context context = getApplicationContext();
+                    CharSequence texts = "You shan't";
+                    int duration= Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context,texts,duration);
+                    toast.show();
+                }
+                intent2.putExtra(EXTRA_MESSAGE,prop);
+                startActivity(intent2);
+            }
+        });
+        buttonNand.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop= text.getText().toString();
+                EXTRA_MESSAGE = prop;
+                try {
+                    BoolExpr bool = BoolExprParse.parse(prop);
+                    bool = BoolExprManipulation.useNANDOnly(bool);
+                    prop = bool.toString();
+                    EXTRA_MESSAGE =prop;
+                }
+                catch (RuntimeException e) {
+                    Context context = getApplicationContext();
+                    CharSequence texts = "You shan't";
+                    int duration= Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context,texts,duration);
+                    toast.show();
+                }
                 intent2.putExtra(EXTRA_MESSAGE,prop);
                 startActivity(intent2);
             }
