@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by benjamin on 10/4/14.
@@ -176,7 +177,16 @@ public class CircuitView extends View {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        RectF rect = new RectF();
+        mPath.path.computeBounds(rect,true);
+
+        setMeasuredDimension((int)rect.width()+20,(int)rect.height()+40);
+    }
+
     protected void onDraw(Canvas canvas) {
         canvas.drawPath(mPath.path, mPaint);
+
     }
 }

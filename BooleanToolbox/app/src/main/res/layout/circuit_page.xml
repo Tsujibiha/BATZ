@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="false">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/outerScroll"
+    android:scrollbars="vertical"
+    android:fillViewport="true"
+    android:fadeScrollbars="false">
+
     <HorizontalScrollView
-        android:id="@+id/scroller2"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-<LinearLayout
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-
-
-    <ViewStub
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/viewStub2"
-        android:layout_gravity="center_horizontal" />
-
-</LinearLayout>
-    </HorizontalScrollView>
-</ScrollView>
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/innerScroll"
+    android:scrollbars="horizontal"
+    android:fillViewport="true"
+    android:fadeScrollbars="false"
+    />
+    </ScrollView>
