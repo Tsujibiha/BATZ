@@ -25,7 +25,9 @@ public class CircuitActivity extends Activity {
         String prop = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
        try {
            BoolExpr bool = BoolExprParse.parse(prop);
-           //View view = new
+           View view = new CircuitView(this.getApplicationContext(),bool);
+           setContentView(view);
+
        }
         catch (RuntimeException e) {
             Context context = getApplicationContext();

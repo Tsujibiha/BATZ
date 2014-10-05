@@ -44,6 +44,7 @@ public static String EXTRA_MESSAGE = "pie";
         Button buttonT = (Button)findViewById(R.id.button_T);
         Button buttonBack = (Button)findViewById(R.id.button_Back);
         Button buttonClear = (Button)findViewById(R.id.button_Clear);
+        Button buttonNot = (Button)findViewById(R.id.button_Not);
         final Intent intent = new Intent(this, TableActivity.class);
         final Intent intent2 = new Intent(this, CircuitActivity.class);
 
@@ -130,6 +131,12 @@ public static String EXTRA_MESSAGE = "pie";
             public void onClick(View v) {
                 text.setText(prop+")");
                 prop = "";
+                text.setText(prop);
+            }
+        });
+        buttonNot.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                prop +="!";
                 text.setText(prop);
             }
         });
