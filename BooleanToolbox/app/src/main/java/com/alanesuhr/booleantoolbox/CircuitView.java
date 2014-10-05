@@ -102,10 +102,10 @@ public class CircuitView extends View {
                 break;
             case BUF:
                 path.path = Gates.Buf();
+                path.yOut = 25f;
+                path.xOut = 80f;
                 pathA = drawGates(expr.getChildA());
                 stitchPaths(path, pathA);
-                path.yOut = 50f;
-                path.xOut = 150f;
                 break;
         }
         handleInversion(path, expr.getInverted());
