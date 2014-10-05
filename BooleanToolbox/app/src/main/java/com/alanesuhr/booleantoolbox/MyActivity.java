@@ -61,6 +61,8 @@ public class MyActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             BoolExpr in = BoolExprParse.parse("!(!(B+C)+!(TF)+!D+!B!C!A)");
+            //BoolExpr t = BoolExpr.makeConst(true);
+            //BoolExpr in = BoolExpr.makeAnd(t, t);
             View rootView = new CircuitView(container.getContext(), in);
             return rootView;
         }

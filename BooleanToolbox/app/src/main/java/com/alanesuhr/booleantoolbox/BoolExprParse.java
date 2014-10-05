@@ -22,7 +22,12 @@ public class BoolExprParse {
 
     public static BoolExpr parse(String s) {
         Queue<Character> in = getTokens(s);
-        return parseExpr(in);
+        BoolExpr out = parseExpr(in);
+        if (!in.isEmpty()) {
+            Log.e(TAG, "Unexpected character " + in.peek());
+            throw new RuntimeException();
+        }
+        return out;
     }
 
     private static BoolExpr parseExpr(Queue<Character> in) {
@@ -42,11 +47,6 @@ public class BoolExprParse {
             } else { // is an XOR
                 cur_term = BoolExpr.makeXor(cur_term, next_term);
             }
-        }
-
-        if (!in.isEmpty()) {
-            Log.e(TAG, "Unexpected character " + in.peek());
-            throw new RuntimeException();
         }
 
         return cur_term;

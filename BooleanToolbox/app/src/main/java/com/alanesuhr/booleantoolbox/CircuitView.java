@@ -59,9 +59,7 @@ public class CircuitView extends View {
                 path.yOut = 50f;
                 path.xOut = 100f;
 
-                pathA = drawGates(expr.getChildA());
-                pathB = drawGates(expr.getChildB());
-                stitchPaths(path, pathA, pathB);
+                drawChildren(path, expr.getChildA(), expr.getChildB());
                 break;
             case OR:
                 path.path = Gates.Or();
@@ -161,6 +159,20 @@ public class CircuitView extends View {
         if(inverted) {
             path.path.addPath(Gates.Bauble(), path.xOut + 60f, path.yOut);
             path.xOut += 20f;
+        }
+    }
+
+    private void drawChildren(SubPath parent, BoolExpr childA, BoolExpr childB) {
+        if(childA != childB) {
+            SubPath pathA = drawGates(childA);
+            SubPath pathB = drawGates(childB);
+            stitchPaths(parent, pathA, pathB);
+        } else {
+            Log.d(TAG, childA.toString());
+            parent.path.moveTo(0f, 25f);
+            parent.path.lineTo(0f, 75f);
+            SubPath childPath = drawGates(childA);
+            stitchPaths(parent, childPath);
         }
     }
 
