@@ -43,6 +43,12 @@ public class BoolExprParse {
                 cur_term = BoolExpr.makeXor(cur_term, next_term);
             }
         }
+
+        if (!in.isEmpty()) {
+            Log.e(TAG, "Unexpected character " + in.peek());
+            throw new RuntimeException();
+        }
+
         return cur_term;
     }
 
