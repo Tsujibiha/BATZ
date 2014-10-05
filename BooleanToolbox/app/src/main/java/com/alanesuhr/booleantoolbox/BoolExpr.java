@@ -1,5 +1,6 @@
 package com.alanesuhr.booleantoolbox;
 
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +14,6 @@ import java.util.TreeSet;
  * Created by benjamin on 10/3/14.
  */
 public class BoolExpr {
-
     /**
      * Operation implemented by this
      */
@@ -21,6 +21,7 @@ public class BoolExpr {
         AND,
         OR,
         XOR,
+        BUF,
         CONST,
         VAR
     }
@@ -53,6 +54,8 @@ public class BoolExpr {
 
     }
 
+    private String TAG = "BoolExpr";
+
     /**
      * Evaluates this
      *
@@ -76,6 +79,8 @@ public class BoolExpr {
             case VAR:
                 result = values.get(this.variable);
                 break;
+            case BUF:
+                result = this.childA.eval(values);
         }
         if (this.inverted) {
             result = !result;
@@ -111,6 +116,10 @@ public class BoolExpr {
                 break;
             case VAR:
                 out = this.variable.toString();
+                needParen = false;
+                break;
+            case BUF:
+                out = this.childA.toString();
                 needParen = false;
                 break;
         }
@@ -167,6 +176,26 @@ public class BoolExpr {
         return out;
     }
 
+    public BoolExpr getSimplifiedExpr() {
+        return (new TruthTable(this)).getSimplifiedExpr();
+    }
+
+    public void setChildA(BoolExpr expr) {
+        if (this.kind == Kind.CONST || this.kind == kind.VAR) {
+            Log.d(TAG, "Const or var cannot have child");
+            throw new RuntimeException();
+        }
+        this.childA = expr;
+    }
+
+    public void setChildB(BoolExpr expr) {
+        if (this.kind == Kind.CONST || this.kind == kind.VAR || this.kind == kind.BUF) {
+            Log.d(TAG, "Const, var, buf cannot have child");
+            throw new RuntimeException();
+        }
+
+        this.childB = expr;
+    }
 
     public static BoolExpr makeAnd(BoolExpr a, BoolExpr b, boolean inv) {
         BoolExpr out = new BoolExpr();
@@ -192,6 +221,22 @@ public class BoolExpr {
         out.childA = a;
         out.childB = b;
         out.inverted = inv;
+        return out;
+    }
+
+    public static BoolExpr makeNot(BoolExpr a) {
+        BoolExpr out = new BoolExpr();
+        out.kind = Kind.BUF;
+        out.inverted = true;
+        out.childA = a;
+        return out;
+    }
+
+    public static BoolExpr makeBuf(BoolExpr a) {
+        BoolExpr out = new BoolExpr();
+        out.kind = Kind.BUF;
+        out.inverted = false;
+        out.childA = a;
         return out;
     }
 
