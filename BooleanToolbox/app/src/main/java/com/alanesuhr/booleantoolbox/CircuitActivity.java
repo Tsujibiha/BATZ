@@ -1,6 +1,7 @@
 package com.alanesuhr.booleantoolbox;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class CircuitActivity extends Activity {
@@ -17,16 +19,25 @@ public class CircuitActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.truth_table);
 
-        TextView text = (TextView) findViewById(R.id.textView);
+        setContentView(R.layout.circuit_page);
         Intent intent = getIntent();
         String prop = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-        BoolExpr bool = BoolExprParse.parse(prop);
-        TruthTable truth = new TruthTable(bool);
-        truth.getHTMLTable();
-        String table = truth.toString();
-        text.setText(Html.fromHtml(table));
+       try {
+           BoolExpr bool = BoolExprParse.parse(prop);
+           //View view = new
+       }
+        catch (RuntimeException e) {
+            Context context = getApplicationContext();
+            CharSequence texts = "You shan't";
+            int duration= Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context,texts,duration);
+            toast.show();
+        }
+
+
+
+
     }
 
     @Override

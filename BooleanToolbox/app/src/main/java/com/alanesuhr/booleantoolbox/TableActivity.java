@@ -1,6 +1,7 @@
 package com.alanesuhr.booleantoolbox;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by lyndis on 10/4/14.
@@ -25,11 +27,22 @@ public class TableActivity extends Activity {
         WebView text = (WebView) findViewById(R.id.webView);
         Intent intent = getIntent();
         String prop = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-        BoolExpr bool = BoolExprParse.parse(prop);
-        TruthTable truth = new TruthTable(bool);
-        String table= truth.getHTMLTable();
-        text.getSettings().setJavaScriptEnabled(true);
-        text.loadDataWithBaseURL("notreal/",table,"text/html","UTF-8",null);
+        BoolExpr bool;
+        try {
+             bool = BoolExprParse.parse(prop);
+            TruthTable truth = new TruthTable(bool);
+            String table= truth.getHTMLTable();
+            text.getSettings().setJavaScriptEnabled(true);
+            text.loadDataWithBaseURL("notreal/",table,"text/html","UTF-8",null);
+        }
+        catch (RuntimeException e) {
+            Context context = getApplicationContext();
+            CharSequence texts = "You shan't";
+            int duration= Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context,texts,duration);
+            toast.show();
+        }
+
     }
 
     @Override

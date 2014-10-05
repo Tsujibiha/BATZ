@@ -43,6 +43,7 @@ public static String EXTRA_MESSAGE = "pie";
         Button buttonF = (Button)findViewById(R.id.button_F);
         Button buttonT = (Button)findViewById(R.id.button_T);
         Button buttonBack = (Button)findViewById(R.id.button_Back);
+        Button buttonClear = (Button)findViewById(R.id.button_Clear);
         final Intent intent = new Intent(this, TableActivity.class);
         final Intent intent2 = new Intent(this, CircuitActivity.class);
 
@@ -123,6 +124,13 @@ public static String EXTRA_MESSAGE = "pie";
             public void onClick(View v) {
                 text.setText(prop+")");
                 prop = text.getText().toString();
+            }
+        });
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText(prop+")");
+                prop = "";
+                text.setText(prop);
             }
         });
         buttonCircuit.setOnClickListener(new View.OnClickListener() {
