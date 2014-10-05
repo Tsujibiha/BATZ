@@ -39,9 +39,9 @@ public class CircuitView extends View {
         mPath.offset(100, 100);*/
 
         mPath = drawGates(expr);
-        mPath.path.offset(10f, 10f);
-        mPath.path.moveTo(mPath.xOut + 60f, mPath.yOut + 10f);
-        mPath.path.lineTo(mPath.xOut + 100f, mPath.yOut + 10f);
+        mPath.path.offset(10f, 20f);
+        mPath.path.moveTo(mPath.xOut + 60f, mPath.yOut + 20f);
+        mPath.path.lineTo(mPath.xOut + 100f, mPath.yOut + 20f);
 
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
@@ -55,7 +55,7 @@ public class CircuitView extends View {
 
         switch(expr.getKind()) {
             case AND:
-                path.path = Gates.And(expr.getInverted());
+                path.path = Gates.And();
                 path.yOut = 50f;
                 path.xOut = 100f;
 
@@ -64,7 +64,7 @@ public class CircuitView extends View {
                 stitchPaths(path, pathA, pathB);
                 break;
             case OR:
-                path.path = Gates.Or(expr.getInverted());
+                path.path = Gates.Or();
                 path.yOut = 50f;
                 path.xOut = 100f;
 
@@ -73,7 +73,7 @@ public class CircuitView extends View {
                 stitchPaths(path, pathA, pathB);
                 break;
             case XOR:
-                path.path = Gates.Xor(expr.getInverted());
+                path.path = Gates.Xor();
                 path.yOut = 50f;
                 path.xOut = 100f;
 
@@ -82,7 +82,7 @@ public class CircuitView extends View {
                 stitchPaths(path, pathA, pathB);
                 break;
             case CONST:
-                path.path = Gates.Const(expr.getConstant(), expr.getInverted());
+                path.path = Gates.Const(expr.getConstant());
                 path.yOut = 25f;
                 path.xOut = 25f;
                 break;
@@ -92,6 +92,7 @@ public class CircuitView extends View {
                 path.xOut = 25f;
                 break;
         }
+        handleInversion(path, expr.getInverted());
         return path;
     }
 
@@ -118,6 +119,19 @@ public class CircuitView extends View {
 
         path.yOut += yShift;
         path.xOut += xShift;
+    }
+
+    private void handleInversion(SubPath path, boolean inverted) {
+        if(inverted) {
+            Path out = Gates.Not();
+
+            out.offset(path.xOut + 50f, path.yOut - 50f);
+            out.addPath(path.path);
+            out.moveTo(path.xOut + 5f, path.yOut);
+            out.lineTo(path.xOut + 50f, path.yOut);
+
+            path.path = out;
+        }
     }
 
     protected void onDraw(Canvas canvas) {

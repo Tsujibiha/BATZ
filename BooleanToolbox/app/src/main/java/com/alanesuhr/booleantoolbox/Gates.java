@@ -138,6 +138,19 @@ public class Gates {
         return out;
     }
 
+    public static Path Const(boolean in, boolean inverted) {
+        Path out;
+        if(inverted) {
+            out = Not();
+
+            out.offset(25f, -25f);
+            out.addPath(Const(in));
+        } else {
+            out = Const(in);
+        }
+        return out;
+    }
+
     public static Path Variable(BoolExpr.Variable var) {
         Path out = new Path();
 
@@ -194,15 +207,15 @@ public class Gates {
         return out;
     }
 
-    public static Path Const(boolean in, boolean inverted) {
-        Path out = new Path();
+    public static Path Variable(BoolExpr.Variable in, boolean inverted) {
+        Path out;
         if(inverted) {
             out = Not();
 
             out.offset(25f, -25f);
-            out.addPath(Const(in));
+            out.addPath(Variable(in));
         } else {
-            out = Const(in);
+            out = Variable(in);
         }
         return out;
     }
