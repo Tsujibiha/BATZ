@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 
 public class MyActivity extends Activity {
-
+public static String EXTRA_MESSAGE = "pie";
 
 
     public String prop ="";
@@ -43,6 +43,9 @@ public class MyActivity extends Activity {
         Button buttonF = (Button)findViewById(R.id.button_F);
         Button buttonT = (Button)findViewById(R.id.button_T);
         Button buttonBack = (Button)findViewById(R.id.button_Back);
+        final Intent intent = new Intent(this, TableActivity.class);
+        final Intent intent2 = new Intent(this, CircuitActivity.class);
+
         buttonA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                text.setText(prop+"A");
@@ -125,16 +128,16 @@ public class MyActivity extends Activity {
         buttonCircuit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 prop= text.getText().toString();
-                Intent intent = new Intent(this, CircuitActivity.class);
-                intent.putExtra(prop,prop);
-                startActivity(intent);
+                EXTRA_MESSAGE = prop;
+                intent2.putExtra(EXTRA_MESSAGE,prop);
+                startActivity(intent2);
             }
         });
         buttonTable.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 prop= text.getText().toString();
-                Intent intent = new Intent(this, TableActivity.class);
-                intent.putExtra(prop,prop);
+                EXTRA_MESSAGE = prop;
+                intent.putExtra(EXTRA_MESSAGE,prop);
                 startActivity(intent);
             }
         });
@@ -159,10 +162,6 @@ public class MyActivity extends Activity {
             }
         });
 
-        prop = text.getText().toString();
-        String test = prop;
-        BoolExpr expr = BoolExprParse.parse(test);
-        Log.d("Output", expr.toString());
 
 
     }

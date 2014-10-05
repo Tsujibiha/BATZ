@@ -183,7 +183,7 @@
     <TextView
         android:layout_width="307dp"
         android:layout_height="62dp"
-        android:text="New Text"
+        android:text="Enter Expression Here"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal|top" />
 
