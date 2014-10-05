@@ -7,6 +7,11 @@ import android.graphics.RectF;
  * Created by benjamin on 10/4/14.
  */
 public class Gates {
+    public static Path Empty() {
+        Path out = new Path();
+        return out;
+    }
+
     public static Path Bauble() {
         Path out = new Path();
 
