@@ -23,12 +23,12 @@ public class CircuitActivity extends Activity {
         setContentView(R.layout.circuit_page);
         Intent intent = getIntent();
         String prop = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-       try {
+        try {
            BoolExpr bool = BoolExprParse.parse(prop);
            View view = new CircuitView(this.getApplicationContext(),bool);
            setContentView(view);
 
-       }
+        }
         catch (RuntimeException e) {
             Context context = getApplicationContext();
             CharSequence texts = "You shan't";
