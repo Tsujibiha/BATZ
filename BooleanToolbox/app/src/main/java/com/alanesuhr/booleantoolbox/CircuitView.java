@@ -64,7 +64,7 @@ public class CircuitView extends View {
                 stitchPaths(path, pathA, pathB);
                 break;
             case OR:
-                path.path = Gates.Or();
+                path.path = Gates.Or(expr.getInverted());
                 path.yOut = 50f;
                 path.xOut = 100f;
 
@@ -73,10 +73,16 @@ public class CircuitView extends View {
                 stitchPaths(path, pathA, pathB);
                 break;
             case XOR:
-                path.path = new Path();
+                path.path = Gates.Xor(expr.getInverted());
+                path.yOut = 50f;
+                path.xOut = 100f;
+
+                pathA = drawGates(expr.getChildA());
+                pathB = drawGates(expr.getChildB());
+                stitchPaths(path, pathA, pathB);
                 break;
             case CONST:
-                path.path = Gates.Const(expr.getConstant());
+                path.path = Gates.Const(expr.getConstant(), expr.getInverted());
                 path.yOut = 25f;
                 path.xOut = 25f;
                 break;

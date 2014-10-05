@@ -33,10 +33,15 @@ public class BoolExprParse {
 
         BoolExpr cur_term = parseTerm(in);
 
-        while(!in.isEmpty() && OrChars.indexOf(in.peek()) != -1) { // for each term
+        while(!in.isEmpty() && (OrChars.indexOf(in.peek()) != -1 ||
+                               XorChars.indexOf(in.peek()) != -1)) { // for each term
             char next = in.remove();
             BoolExpr next_term = parseTerm(in);
-            cur_term = BoolExpr.makeOr(cur_term, next_term);
+            if(OrChars.indexOf(next) != -1) { // is an OR
+                cur_term = BoolExpr.makeOr(cur_term, next_term);
+            } else { // is an XOR
+                cur_term = BoolExpr.makeXor(cur_term, next_term);
+            }
         }
         return cur_term;
     }
@@ -73,7 +78,7 @@ public class BoolExprParse {
             in.remove(); // throw out '('
             factor = parseExpr(in);
             if(in.isEmpty()) {
-                Log.e(TAG, "Didn't find a closed paren.");
+                Log.e(TAG, "Missing close paren.");
                 throw new RuntimeException();
             }
             in.remove(); // throw out ')'
@@ -93,7 +98,7 @@ public class BoolExprParse {
         }
 
         // If the number of nots is even, then it's not inverted. Otherwise it is inverted.
-        return (numNots % 2 == 0) ? false : true;
+        return numNots % 2 != 0;
     }
 
     private static BoolExpr parseConstOrVar(Queue<Character> in) {

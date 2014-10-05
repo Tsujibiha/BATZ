@@ -31,10 +31,6 @@ public class Gates {
 
             out.offset(150f, 0f);
             out.addPath(And());
-
-            out.moveTo(100f, 50f);
-            out.lineTo(150f, 50f);
-
         } else {
             out = And();
         }
@@ -55,6 +51,54 @@ public class Gates {
         out.moveTo(69f, 75f);
         out.lineTo(0f, 75f);
 
+        return out;
+    }
+
+    public static Path Or(boolean inverted) {
+        Path out;
+        if(inverted) {
+            out = Not();
+
+            out.offset(150f, 0f);
+            out.addPath(Or());
+        } else {
+            out = Or();
+        }
+        return out;
+    }
+
+    public static Path Xor() {
+        Path out = new Path();
+
+        out.arcTo(new RectF(-25, 0, 75, 100), -80f, 160f);
+        out.lineTo(100f, 100f);
+        out.moveTo(30f, 0f);
+        out.arcTo(new RectF(50, 0, 150, 100), -90f, 180f);
+
+
+        Path temp = new Path();
+        temp.arcTo(new RectF(-50, 0, 50, 100), -80f, 160f);
+        out.addPath(temp);
+
+        out.moveTo(69f, 25f);
+        out.lineTo(0f, 25f);
+
+        out.moveTo(69f, 75f);
+        out.lineTo(0f, 75f);
+
+        return out;
+    }
+
+    public static Path Xor(boolean inverted) {
+        Path out;
+        if(inverted) {
+            out = Not();
+
+            out.offset(150f, 0f);
+            out.addPath(Xor());
+        } else {
+            out = Xor();
+        }
         return out;
     }
 
@@ -144,7 +188,19 @@ public class Gates {
                 out.lineTo(25f, 50f);
                 break;
         }
+        return out;
+    }
 
+    public static Path Const(boolean in, boolean inverted) {
+        Path out = new Path();
+        if(inverted) {
+            out = Not();
+
+            out.offset(25f, -25f);
+            out.addPath(Const(in));
+        } else {
+            out = Const(in);
+        }
         return out;
     }
 }
