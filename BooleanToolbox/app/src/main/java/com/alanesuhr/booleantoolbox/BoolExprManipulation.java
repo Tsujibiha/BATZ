@@ -7,6 +7,10 @@ import android.util.Log;
  */
 public class BoolExprManipulation {
     public static BoolExpr useNANDOnly(BoolExpr originalExpr) {
+        return nandConvertNots(nandConvertAndOr(originalExpr));
+    }
+
+    private static BoolExpr nandConvertAndOr(BoolExpr originalExpr) {
         BoolExpr result;
 
         if (originalExpr.getKind() == BoolExpr.Kind.CONST
@@ -24,21 +28,43 @@ public class BoolExprManipulation {
             BoolExpr childA = useNANDOnly(originalExpr.getChildA());
             BoolExpr childB = useNANDOnly(originalExpr.getChildB());
 
-            childA.setInverted(true);
-            childB.setInverted(true);
+            childA = BoolExpr.makeNot(childA);
+            childB = BoolExpr.makeNot(childB);
 
             result = BoolExpr.makeAnd(childA, childB, true);
         } else {
             result = useNANDOnly(originalExpr);
-        } // else if originalExpr is inverted
-        // replace originalExpr with a nand gate whose children are the original expression
-        // Also remove not-not parent-child relations
-        // Also remove inverted-only children
+        }
+        return result;
+    }
+
+    private static BoolExpr nandConvertNots(BoolExpr originalExpr) {
+        BoolExpr result;
+
+        if (originalExpr.getKind() == BoolExpr.Kind.BUF) {
+            if (originalExpr.getChildA().getKind() == BoolExpr.Kind.BUF) {
+                result = nandConvertNots(originalExpr.getChildA().getChildA());
+            } else {
+                BoolExpr child = nandConvertNots(originalExpr.getChildA());
+                result = BoolExpr.makeAnd(child, child, true);
+            }
+        } else if (originalExpr.getKind() == BoolExpr.Kind.CONST
+            || originalExpr.getKind() == BoolExpr.Kind.VAR) {
+            result = originalExpr;
+        } else {
+            result = originalExpr;
+            result.setChildA(nandConvertNots(result.getChildA()));
+            result.setChildB(nandConvertNots(result.getChildB()));
+        }
 
         return result;
     }
 
     public static BoolExpr useNOROnly(BoolExpr originalExpr) {
+        return norConvertNots(norConvertAndOr(originalExpr));
+    }
+
+    private static BoolExpr norConvertAndOr(BoolExpr originalExpr) {
         BoolExpr result;
 
         if (originalExpr.getKind() == BoolExpr.Kind.CONST
@@ -56,13 +82,35 @@ public class BoolExprManipulation {
             BoolExpr childA = useNOROnly(originalExpr.getChildA());
             BoolExpr childB = useNOROnly(originalExpr.getChildB());
 
-            childA.setInverted(true);
-            childB.setInverted(true);
+            childA = BoolExpr.makeNot(childA);
+            childB = BoolExpr.makeNot(childB);
 
             result = BoolExpr.makeOr(childA, childB, true);
         } else {
             result = useNOROnly(originalExpr);
-        } 
+        }
+
+        return result;
+    }
+
+    private static BoolExpr norConvertNots(BoolExpr originalExpr) {
+        BoolExpr result;
+
+        if (originalExpr.getKind() == BoolExpr.Kind.BUF) {
+            if (originalExpr.getChildA().getKind() == BoolExpr.Kind.BUF) {
+                result = nandConvertNots(originalExpr.getChildA().getChildA());
+            } else {
+                BoolExpr child = nandConvertNots(originalExpr.getChildA());
+                result = BoolExpr.makeOr(child, child, true);
+            }
+        } else if (originalExpr.getKind() == BoolExpr.Kind.CONST
+            || originalExpr.getKind() == BoolExpr.Kind.VAR) {
+            result = originalExpr;
+        } else {
+            result = originalExpr;
+            result.setChildA(nandConvertNots(result.getChildA()));
+            result.setChildB(nandConvertNots(result.getChildB()));
+        }
 
         return result;
     }
