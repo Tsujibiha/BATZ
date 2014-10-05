@@ -202,12 +202,12 @@
     <TextView
         android:layout_width="307dp"
         android:layout_height="62dp"
-        android:text="Enter Expression Here"
+        android:text=""
+        android:background="@drawable/back"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal|top" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="151dp"
         android:layout_height="95dp"
         android:text="Table"

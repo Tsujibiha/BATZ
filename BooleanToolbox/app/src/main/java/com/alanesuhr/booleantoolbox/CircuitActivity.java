@@ -3,6 +3,7 @@ package com.alanesuhr.booleantoolbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,8 @@ public class CircuitActivity extends Activity {
            BoolExpr bool = BoolExprParse.parse(prop);
            View view = new CircuitView(this.getApplicationContext(),bool);
            setContentView(view);
+           ViewStub stub = new ViewStub(getApplicationContext());
+           stub.inflate();
 
        }
         catch (RuntimeException e) {
