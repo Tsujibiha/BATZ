@@ -144,6 +144,8 @@ public class BoolExpr {
         return this.constant;
     }
 
+    public BoolExpr.Variable getVariable() { return this.variable; }
+
     public boolean getInverted() {
         return this.inverted;
     }

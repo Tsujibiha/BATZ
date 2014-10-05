@@ -81,7 +81,9 @@ public class CircuitView extends View {
                 path.xOut = 25f;
                 break;
             case VAR:
-                path.path = new Path();
+                path.path = Gates.Variable(expr.getVariable());
+                path.yOut = 25f;
+                path.xOut = 25f;
                 break;
         }
         return path;
